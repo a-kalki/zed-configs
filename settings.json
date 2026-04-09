@@ -1,0 +1,153 @@
+{
+  // --- Интерфейс и Общее ---
+  "theme": "Gruvbox Dark Soft",
+  "icon_theme": "Zed (Default)",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "buffer_font_family": ".ZedMono",
+  "autosave": "on_focus_change",
+  "tab_size": 2,
+  "use_smartcase_search": true,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+
+  // --- Редактор и Навигация ---
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "on_yank", // Копирование в системный буфер при 'y'
+  },
+  "relative_line_numbers": "enabled", // 12k -> 12 выше; 12j -> 12 ниже; (hjkl)
+  "soft_wrap": "editor_width",
+  "preferred_line_length": 100,
+  "document_folding_ranges": "on", // Включает сворачивание блоков кода
+  "document_symbols": "on", // Поддержка структуры документа для Outline
+  "semantic_tokens": "combined", // Улучшенная подсветка синтаксиса через LSP
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware",
+  },
+  "inlay_hints": {
+    "enabled": true, // Визуальные подсказки типов и аргументов прямо в строках
+  },
+
+  // --- Вкладки и Панели ---
+  "tabs": {
+    "show_diagnostics": "errors", // Индикатор ошибок прямо на вкладке
+  },
+  "git_panel": { "dock": "left" },
+  "project_panel": { "hide_hidden": false },
+  "outline_panel": { "dock": "right" },
+  "collaboration_panel": { "dock": "left" },
+  "notification_panel": { "dock": "left" },
+  "file_finder": {
+    "modal_max_width": "medium",
+  },
+
+  // --- Языки и Форматирование (Biome) ---
+  "format_on_save": "on",
+  "languages": {
+    "JavaScript": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+    "TypeScript": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+    "TSX": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+    "JSON": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+    "CSS": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+    "HTML": {
+      "formatter": {
+        "external": {
+          "command": "biome",
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+        },
+      },
+    },
+  },
+
+  // --- Настройки LSP и AI ---
+  "lsp": {
+    "biome": {
+      "settings": {
+        "on_save": true, // Автоисправление ошибок Biome при сохранении
+        "fix_all": true,
+      },
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "classAttributes": ["class", "className", "ngClass", "styles"],
+      },
+    },
+  },
+
+  // --- AI ---
+  // "language_models": {
+  //   "ollama": { "api_url": "http://localhost:11434" },
+  // },
+
+  // --- Терминал ---
+  "terminal": {
+    "line_height": "standard",
+    "env": {
+      "EDITOR": "zed --wait", // Открывать системные правки (напр. git commit) в Zed
+    },
+  },
+
+  // --- Профили ---
+  "profiles": {
+    "presentation (Light)": {
+      "buffer_font_size": 18,
+      "ui_font_size": 18,
+      "theme": "One Light",
+    },
+    "presentation (Dark)": {
+      "buffer_font_size": 18,
+      "ui_font_size": 18,
+      "theme": "One Dark",
+    },
+  },
+
+  // --- Исключения файлов (Чистка проекта) ---
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.DS_Store",
+    "**/node_modules",
+    "**/dist",
+    "**/.next",
+    "**/out",
+  ],
+}

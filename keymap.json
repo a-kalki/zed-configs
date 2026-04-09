@@ -1,0 +1,152 @@
+// ==========================================================================
+// ZED KEYMAP CONFIG (Corne + Vim Mode)
+// ==========================================================================
+// [SPACE]  - Editor Leader (LSP, поиск, действия с кодом, ИИ)
+// [SHIFT]  - UI Leader (Панели, доки, терминал, навигация по вкладкам)
+// [CTRL]   - Insert Mode (Сигнатуры функций, ИИ-предсказания)
+
+[
+  // --- Системные и Кастомные движения ---
+  {
+    "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+    "bindings": {
+      "space": null,
+      "space p": ["workspace::SendKeystrokes", "\"+p"], // Вставка из системного буфера
+
+      "g c": "editor::ToggleComments",
+      "g f": "editor::OpenExcerpts", // Быстрый просмотр определений без перехода
+
+      // fold sector
+      "z t": "editor::ToggleFold",
+      "z f f": "editor::FoldAll",
+      "z f u": "editor::UnfoldAll",
+      "z f q": "editor::FoldAtLevel_1",
+      "z f w": "editor::FoldAtLevel_2",
+      "z f e": "editor::FoldAtLevel_3",
+
+      // Операции с табами
+      "shift w": "workspace::Save",
+      "shift W": "workspace::SaveAll",
+      "shift q": "pane::CloseActiveItem",
+      "shift Q": "pane::CloseOtherItems",
+
+      // Навигация между сплитами (панами)
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
+  },
+
+  // --- Режим normal, visual, operator (для операции перемещения) ---
+  {
+    "context": "Editor &&  (vim_mode == normal || vim_mode == visual || vim_mode == operator)",
+    "bindings": {
+      ",": ["vim::PushSneak", {}], // аналог f,F только по двум символам
+      "shift-,": ["vim::PushSneakBackward", {}],
+    },
+  },
+
+  // --- Режим выделения ---
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "space y": ["workspace::SendKeystrokes", "\"+y"], // Копирование в системный буфер
+      "s": "vim::PushAddSurrounds", // Добавить кавычки/скобки (vim-surround)
+    },
+  },
+
+  // --- Текстовые объекты (Quotes & Brackets) ---
+  {
+    "context": "(vim_operator == a || vim_operator == i) && !menu",
+    "bindings": {
+      "q": "vim::AnyQuotes",
+      "b": "vim::AnyBrackets",
+    },
+  },
+
+  // --- Режим редактирования ---
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      // Открыть меню быстрых фиксов (лампочка)
+      "ctrl-.": "editor::ToggleCodeActions",
+      // Принудительно открыть список подсказок (если закрыл или не вылезло)
+      "ctrl-space": "editor::ShowCompletions",
+      // Подсказки сигнатур для функции
+      "ctrl-k": "editor::ShowSignatureHelp",
+
+      // Принять всё предсказание ИИ на Ctrl + s (success)
+      "ctrl-s": "editor::AcceptEditPrediction",
+      // Принять только следующее слово на Ctrl + w (word)
+      "ctrl-w": "editor::AcceptNextWordEditPrediction",
+      // Принять только следующую линию на Ctrl + l (line)
+      "ctrl-l": "editor::AcceptNextLineEditPrediction",
+    },
+  },
+
+  // --- SPACE: Редактор и LSP (Normal Mode) ---
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      "space space": "file_finder::Toggle", // Поиск файлов
+      "space .": "editor::ToggleCodeActions", // Быстрые фиксы (Biome/LSP)
+      "space c r": "editor::Rename",
+      "space c i": "editor::OrganizeImports",
+      "space s c": "outline::Toggle", // Символы текущего файла
+      "space s p": "project_symbols::Toggle", // Символы проекта
+      "space /": "pane::DeploySearch", // Глобальный поиск текста
+      "space x x": "diagnostics::Deploy", // Список всех ошибок (Quickfix)
+      "space m p": "markdown::OpenPreview",
+      "space r t": ["editor::SpawnNearestTask", { "reveal": "no_focus" }], // Запуск тестов/сборки
+
+      // Буферы (вкладки)
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+
+      // Навигация по коду (Vim style)
+      "g d": "editor::GoToDefinition",
+      "g D": "editor::GoToDefinitionSplit",
+      "g r": "editor::FindAllReferences",
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+      "shift-k": "editor::Hover",
+    },
+  },
+
+  // --- SHIFT: Панели и Доки (Управление интерфейсом) ---
+  {
+    "context": "Workspace",
+    "bindings": {
+      // Взаимодействие с панелями
+      "shift t": "terminal_panel::Toggle",
+      "shift p": "project_panel::Toggle",
+      "shift g": "git_panel::Toggle",
+      "shift o": "outline_panel::Toggle",
+      "shift b": "workspace::ToggleLeftDock",
+      "shift m": "workspace::ToggleRightDock",
+      "shift f": "pane::RevealInProjectPanel", // Найти текущий файл в дереве слева
+
+      // Навигация
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
+  },
+
+  // --- Навигация в дереве файлов (Project Panel) ---
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "d": "project_panel::Delete",
+      "q": "project_panel::Toggle", // Быстро закрыть панель на Q
+      "v": "project_panel::OpenSplitVertical",
+    },
+  },
+]
